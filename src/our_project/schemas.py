@@ -23,7 +23,7 @@ class ProjectSliderSchema(BaseModel):
 
     @field_validator("preview_photo", mode="before")
     @classmethod
-    def add_base_url(cls, value: dict, info: ValidationInfo) -> str:
+    def add_base_url(cls, value: str, info: ValidationInfo) -> str:
         match info.field_name:
             case "preview_photo":
                 if value and not value.startswith(("https://", "http://")):
