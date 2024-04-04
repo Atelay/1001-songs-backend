@@ -1,8 +1,10 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 
-from src.database.database import Base
+from src.database.database import Base, int_pk
+
 
 storage = FileSystemStorage(path="static/media/footer")
 
@@ -10,10 +12,10 @@ storage = FileSystemStorage(path="static/media/footer")
 class Footer(Base):
     __tablename__ = "footer"
 
-    id: int = Column(Integer, primary_key=True)
-    reporting: str = Column(FileType(storage=storage), nullable=False)
-    privacy_policy: str = Column(FileType(storage=storage), nullable=False)
-    rules_and_terms: str = Column(FileType(storage=storage), nullable=False)
-    email: str = Column(String(length=30), nullable=False)
-    facebook_url: str = Column(String(length=500))
-    youtube_url: str = Column(String(length=500))
+    id: Mapped[int_pk]
+    reporting: Mapped[str] = mapped_column(FileType(storage=storage))
+    privacy_policy: Mapped[str] = mapped_column(FileType(storage=storage))
+    rules_and_terms: Mapped[str] = mapped_column(FileType(storage=storage))
+    email: Mapped[str] = mapped_column(String(30))
+    facebook_url: Mapped[str | None] = mapped_column(String(500))
+    youtube_url: Mapped[str | None] = mapped_column(String(500))

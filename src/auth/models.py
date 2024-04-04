@@ -1,25 +1,25 @@
 from fastapi import Depends
 from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import ForeignKey
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
-from src.database.database import Base, get_async_session
-from sqlalchemy.orm import declared_attr
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import declared_attr, Mapped, mapped_column
 from fastapi_users_db_sqlalchemy.access_token import (
     SQLAlchemyAccessTokenDatabase,
     SQLAlchemyBaseAccessTokenTable,
 )
 
+from src.database.database import Base, int_pk, get_async_session
+
 
 class User(SQLAlchemyBaseUserTable[int], Base):
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True)
-    email = Column(String(50), nullable=False)
-    hashed_password: str = Column(String(length=1024), nullable=False)
-    is_active: bool = Column(Boolean, default=True, nullable=False)
-    is_superuser: bool = Column(Boolean, default=False, nullable=False)
-    is_verified: bool = Column(Boolean, default=False, nullable=False)
+    id: Mapped[int_pk]
+    email: Mapped[str] = mapped_column(String(50))
+    hashed_password: Mapped[str] = mapped_column(String(1024))
+    is_active: Mapped[bool] = mapped_column(default=True)
+    is_superuser: Mapped[bool] = mapped_column(default=False)
+    is_verified: Mapped[bool] = mapped_column(default=False)
 
 
 class AccessToken(SQLAlchemyBaseAccessTokenTable[int], Base):
