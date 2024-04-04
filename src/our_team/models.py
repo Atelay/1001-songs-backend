@@ -1,9 +1,9 @@
-from sqlalchemy import Column, String, Integer
-
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column as mc
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 
-from src.database.database import Base
+from src.database.database import Base, int_pk
 
 storage = FileSystemStorage(path="static/media/our_team")
 
@@ -11,10 +11,10 @@ storage = FileSystemStorage(path="static/media/our_team")
 class OurTeam(Base):
     __tablename__ = "our_team"
 
-    id: int = Column(Integer, primary_key=True)
-    full_name: str = Column(String(50), nullable=False)
-    photo: str = Column(FileType(storage=storage), nullable=False)
-    description: str = Column(String(300), nullable=False)
+    id: Mapped[int_pk]
+    full_name: Mapped[str] = mc(String(50))
+    photo: Mapped[str] = mc(FileType(storage=storage))
+    description: Mapped[str] = mc(String(300))
 
     def __repr__(self) -> str:
         return f"{self.full_name}"
