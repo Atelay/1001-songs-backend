@@ -86,7 +86,7 @@ class EducationPageSongGenre(Base):
         back_populates="education_genres",
         lazy="selectin",
     )
-    songs: Mapped[list["Song"]] = relationship( # type: ignore
+    songs: Mapped[list["Song"]] = relationship(  # type: ignore
         secondary="song_education_genre_association",
         back_populates="education_genres",
         lazy="selectin",

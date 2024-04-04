@@ -14,7 +14,9 @@ class ExpeditionCategory(Base):
 
     id: Mapped[int_pk]
     title: Mapped[str] = mapped_column(String(30))
-    expeditions: Mapped["Expedition"] = relationship(back_populates="category", lazy="selectin")
+    expeditions: Mapped["Expedition"] = relationship(
+        back_populates="category", lazy="selectin"
+    )
 
     def __repr__(self) -> str:
         return f"{self.title}"
@@ -39,11 +41,14 @@ class Expedition(Base):
     expedition_date = Column(Date, nullable=False)
     content: Mapped[str_quill]
     category_id: Mapped[int] = mapped_column(ForeignKey("expedition_category.id"))
-    category: Mapped["ExpeditionCategory"] = relationship(back_populates="expeditions", lazy="selectin"
+    category: Mapped["ExpeditionCategory"] = relationship(
+        back_populates="expeditions", lazy="selectin"
     )
 
     city_id: Mapped[int] = mapped_column(ForeignKey("cities.id"))
-    location: Mapped["City"] = relationship(back_populates="expeditions", lazy="selectin")
+    location: Mapped["City"] = relationship(
+        back_populates="expeditions", lazy="selectin"
+    )
 
     authors: Mapped[list[str]] = mapped_column(ARRAY(String(100)))
     editors: Mapped[list[str] | None] = mapped_column(ARRAY(String(100)))
