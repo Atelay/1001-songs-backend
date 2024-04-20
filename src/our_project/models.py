@@ -1,9 +1,9 @@
-from sqlalchemy import Column, String, ForeignKey, Integer, Date, ARRAY
-from sqlalchemy.orm import relationship
+from sqlalchemy import String, ForeignKey, Date
+from sqlalchemy.orm import relationship, Mapped, mapped_column as mc
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 
-from src.database.database import Base
+from src.database.database import Base, int_pk, list_array, str_quill
 
 
 storage = FileSystemStorage(path="static/media/our_projects")
@@ -12,17 +12,17 @@ storage = FileSystemStorage(path="static/media/our_projects")
 class OurProject(Base):
     __tablename__ = "our_projects"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(60), nullable=False)
-    short_description: str = Column(String(200), nullable=False)
-    preview_photo: str = Column(FileType(storage=storage), nullable=False)
-    project_date = Column(Date, nullable=False)
-    content: str = Column(String(30000), nullable=False)
-    authors: list[str] = Column(ARRAY(String(25)), nullable=False)
-    editors: list[str] = Column(ARRAY(String(25)))
-    photographers: list[str] = Column(ARRAY(String(25)))
-    city_id = Column(Integer, ForeignKey("cities.id"))
-    location = relationship("City", back_populates="projects", lazy="selectin")
+    id: Mapped[int_pk]
+    title: Mapped[str] = mc(String(60))
+    short_description: Mapped[str] = mc(String(200))
+    preview_photo: Mapped[str] = mc(FileType(storage=storage))
+    project_date = mc(Date, nullable=False)
+    content: Mapped[str_quill]
+    authors: Mapped[list_array]
+    editors: Mapped[list_array | None]
+    photographers: Mapped[list_array | None]
+    city_id: Mapped[int] = mc(ForeignKey("cities.id"))
+    location: Mapped["City"] = relationship(back_populates="projects", lazy="selectin")
 
     def __repr__(self) -> str:
         return f"{self.title}"

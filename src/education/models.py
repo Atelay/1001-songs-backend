@@ -1,9 +1,9 @@
-from sqlalchemy import ARRAY, Column, ForeignKey, String, Integer
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, String
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 
-from src.database.database import Base
+from src.database.database import Base, int_pk
 
 
 storage1 = FileSystemStorage(path="static/media/calendar_and_ritual_categories")
@@ -14,27 +14,27 @@ storage3 = FileSystemStorage(path="static/media/education_page_song_genres")
 class EducationPage(Base):
     __tablename__ = "education_page"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(60), nullable=False)
-    description: str = Column(String(1000), nullable=False)
-    recommendations: str = Column(String(10000), nullable=False)
-    recommended_sources: str = Column(String(10000), nullable=False)
+    id: Mapped[int_pk]
+    title: Mapped[str] = mapped_column(String(60))
+    description: Mapped[str] = mapped_column(String(1000))
+    recommendations: Mapped[str] = mapped_column(String(10000))
+    recommended_sources: Mapped[str] = mapped_column(String(10000))
 
 
 class CalendarAndRitualCategory(Base):
     __tablename__ = "calendar_and_ritual_categories"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(50), nullable=False)
-    media = Column(FileType(storage=storage1), nullable=False)
-    description: str = Column(String(2000), nullable=False)
-    recommended_sources: str = Column(String(10000), nullable=False)
+    id: Mapped[int_pk]
+    title: Mapped[str] = mapped_column(String(50))
+    media: Mapped[str] = mapped_column(FileType(storage=storage1))
+    description: Mapped[str] = mapped_column(String(2000))
+    recommended_sources: Mapped[str] = mapped_column(String(10000))
 
-    song_subcategories = relationship(
-        "SongSubcategory", back_populates="main_category", lazy="selectin"
+    song_subcategories: Mapped[list["SongSubcategory"]] = relationship(
+        back_populates="main_category", lazy="selectin"
     )
-    education_genres = relationship(
-        "EducationPageSongGenre", back_populates="main_category"
+    education_genres: Mapped[list["EducationPageSongGenre"]] = relationship(
+        back_populates="main_category"
     )
 
     def __repr__(self) -> str:
@@ -44,18 +44,18 @@ class CalendarAndRitualCategory(Base):
 class SongSubcategory(Base):
     __tablename__ = "song_subcategories"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(60), nullable=False)
-    media = Column(FileType(storage=storage2), nullable=False)
-    main_category_id: int = Column(
-        Integer, ForeignKey("calendar_and_ritual_categories.id")
+    id: Mapped[int_pk]
+    title: Mapped[str] = mapped_column(String(60))
+    media: Mapped[str] = mapped_column(FileType(storage=storage2))
+    main_category_id: Mapped[int] = mapped_column(
+        ForeignKey("calendar_and_ritual_categories.id")
     )
 
-    main_category = relationship(
-        "CalendarAndRitualCategory", back_populates="song_subcategories"
+    main_category: Mapped["CalendarAndRitualCategory"] = relationship(
+        back_populates="song_subcategories"
     )
-    education_genres = relationship(
-        "EducationPageSongGenre", back_populates="sub_category", lazy="selectin"
+    education_genres: Mapped[list["EducationPageSongGenre"]] = relationship(
+        back_populates="sub_category", lazy="selectin"
     )
 
     def __repr__(self) -> str:
@@ -65,31 +65,28 @@ class SongSubcategory(Base):
 class EducationPageSongGenre(Base):
     __tablename__ = "education_page_song_genres"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(60), nullable=False)
-    description: str = Column(String(2000), nullable=False)
-    media1: str = Column(FileType(storage=storage3), nullable=False)
-    media2: str = Column(FileType(storage=storage3), nullable=False)
-    media3: str = Column(FileType(storage=storage3), nullable=False)
-    media4: str = Column(FileType(storage=storage3))
-    media5: str = Column(FileType(storage=storage3))
-    main_category_id: int = Column(
-        Integer, ForeignKey("calendar_and_ritual_categories.id")
+    id: Mapped[int_pk]
+    title: Mapped[str] = mapped_column(String(60))
+    description: Mapped[str] = mapped_column(String(2000))
+    media1: Mapped[str] = mapped_column(FileType(storage=storage3))
+    media2: Mapped[str] = mapped_column(FileType(storage=storage3))
+    media3: Mapped[str] = mapped_column(FileType(storage=storage3))
+    media4: Mapped[str | None] = mapped_column(FileType(storage=storage3))
+    media5: Mapped[str | None] = mapped_column(FileType(storage=storage3))
+    main_category_id: Mapped[int] = mapped_column(
+        ForeignKey("calendar_and_ritual_categories.id")
     )
-    sub_category_id: int = Column(Integer, ForeignKey("song_subcategories.id"))
+    sub_category_id: Mapped[int] = mapped_column(ForeignKey("song_subcategories.id"))
 
-    main_category = relationship(
-        "CalendarAndRitualCategory",
+    main_category: Mapped["CalendarAndRitualCategory"] = relationship(
         back_populates="education_genres",
         lazy="selectin",
     )
-    sub_category = relationship(
-        "SongSubcategory",
+    sub_category: Mapped["SongSubcategory"] = relationship(
         back_populates="education_genres",
         lazy="selectin",
     )
-    songs = relationship(
-        "Song",
+    songs: Mapped[list["Song"]] = relationship(  # type: ignore
         secondary="song_education_genre_association",
         back_populates="education_genres",
         lazy="selectin",

@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import String
+from sqlalchemy.orm import Mapped, mapped_column
 
-from src.database.database import Base
+from src.database.database import Base, str_quill, int_pk
 
 
 class About(Base):
     __tablename__ = "about"
 
-    id: int = Column(Integer, primary_key=True)
-    title: str = Column(String(length=60), nullable=False)
-    content: str = Column(String(length=30000), nullable=False)
+    id: Mapped[int_pk]
+    title: Mapped[str] = mapped_column(String(60))
+    content: Mapped[str_quill]

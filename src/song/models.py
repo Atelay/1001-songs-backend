@@ -7,11 +7,11 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped, mapped_column as mc
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage
 
-from src.database.database import Base
+from src.database.database import Base, int_pk, list_array
 
 
 storage = FileSystemStorage(path="static/media/song")
@@ -20,54 +20,46 @@ storage = FileSystemStorage(path="static/media/song")
 class Song(Base):
     __tablename__ = "song"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    title = Column(String(60), nullable=False)
-    song_text = Column(String(5000))
-    song_description = Column(String(300))
+    id: Mapped[int_pk]
+    title: Mapped[str] = mc(String(60))
+    song_text: Mapped[str | None] = mc(String(5000))
+    song_description: Mapped[str | None] = mc(String(300))
     recording_date = Column(Date, nullable=False)
-    performers = Column(String(200), nullable=False)
-    ethnographic_district = Column(String(50), nullable=False)
-    collectors: list[str] = Column(ARRAY(String(25)), nullable=False)
-    is_active: bool = Column(Boolean, default=True, nullable=False)
-    video_url: str = Column(String(500))
-    map_photo: str = Column(FileType(storage=storage))
-    comment_map: str = Column(String(500))
-    photo1: str = Column(FileType(storage=storage))
-    photo2: str = Column(FileType(storage=storage))
-    photo3: str = Column(FileType(storage=storage))
-    photo4: str = Column(FileType(storage=storage))
-    photo5: str = Column(FileType(storage=storage))
-    ethnographic_photo1: str = Column(FileType(storage=storage))
-    ethnographic_photo2: str = Column(FileType(storage=storage))
-    ethnographic_photo3: str = Column(FileType(storage=storage))
-    ethnographic_photo4: str = Column(FileType(storage=storage))
-    ethnographic_photo5: str = Column(FileType(storage=storage))
-    stereo_audio: str = Column(FileType(storage=storage))
-    multichannel_audio1: str = Column(FileType(storage=storage))
-    multichannel_audio2: str = Column(FileType(storage=storage))
-    multichannel_audio3: str = Column(FileType(storage=storage))
-    multichannel_audio4: str = Column(FileType(storage=storage))
-    multichannel_audio5: str = Column(FileType(storage=storage))
-    multichannel_audio6: str = Column(FileType(storage=storage))
-    fund_id = Column(Integer, ForeignKey("funds.id"))
+    performers: Mapped[str] = mc(String(200))
+    ethnographic_district: Mapped[str] = mc(String(50))
+    collectors: Mapped[list_array]
+    is_active: Mapped[bool] = mc(default=True)
+    video_url: Mapped[str | None] = mc(String(500))
+    map_photo: Mapped[str | None] = mc(FileType(storage=storage))
+    comment_map: Mapped[str | None] = mc(String(500))
+    photo1: Mapped[str | None] = mc(FileType(storage=storage))
+    photo2: Mapped[str | None] = mc(FileType(storage=storage))
+    photo3: Mapped[str | None] = mc(FileType(storage=storage))
+    photo4: Mapped[str | None] = mc(FileType(storage=storage))
+    photo5: Mapped[str | None] = mc(FileType(storage=storage))
+    ethnographic_photo1: Mapped[str | None] = mc(FileType(storage=storage))
+    ethnographic_photo2: Mapped[str | None] = mc(FileType(storage=storage))
+    ethnographic_photo3: Mapped[str | None] = mc(FileType(storage=storage))
+    ethnographic_photo4: Mapped[str | None] = mc(FileType(storage=storage))
+    ethnographic_photo5: Mapped[str | None] = mc(FileType(storage=storage))
+    stereo_audio: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio1: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio2: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio3: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio4: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio5: Mapped[str | None] = mc(FileType(storage=storage))
+    multichannel_audio6: Mapped[str | None] = mc(FileType(storage=storage))
+    fund_id: Mapped[int] = mc(ForeignKey("funds.id"))
+    city_id: Mapped[int] = mc(ForeignKey("cities.id"))
     fund = relationship("Fund", back_populates="songs", lazy="selectin")
-    city_id = Column(Integer, ForeignKey("cities.id"))
-    city = relationship(
-        "City",
-        back_populates="songs",
-        lazy="selectin",
-    )
-    education_genres = relationship(
-        "EducationPageSongGenre",
+    city: Mapped["City"] = relationship(back_populates="songs", lazy="selectin")
+    education_genres: Mapped[list["EducationPageSongGenre"]] = relationship(
         secondary="song_education_genre_association",
         back_populates="songs",
         lazy="selectin",
     )
-    genres = relationship(
-        "Genre",
-        secondary="song_genre_association",
-        back_populates="songs",
-        lazy="selectin",
+    genres: Mapped[list["Genre"]] = relationship(
+        secondary="song_genre_association", back_populates="songs", lazy="selectin"
     )
 
     @property
@@ -108,13 +100,10 @@ class Song(Base):
 class Genre(Base):
     __tablename__ = "genre"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    genre_name = Column(String(50), nullable=False)
-    songs = relationship(
-        "Song",
-        secondary="song_genre_association",
-        back_populates="genres",
-        lazy="selectin",
+    id: Mapped[int_pk]
+    genre_name: Mapped[str] = mc(String(50))
+    songs: Mapped[list["Song"]] = relationship(
+        secondary="song_genre_association", back_populates="genres", lazy="selectin"
     )
 
     def __repr__(self) -> str:
@@ -124,26 +113,25 @@ class Genre(Base):
 class SongToGenre(Base):
     __tablename__ = "song_genre_association"
 
-    song_id = Column(Integer, ForeignKey("song.id"), primary_key=True)
-    genre_id = Column(Integer, ForeignKey("genre.id"), primary_key=True)
+    song_id: Mapped[int] = mc(ForeignKey("song.id"), primary_key=True)
+    genre_id: Mapped[int] = mc(ForeignKey("genre.id"), primary_key=True)
 
 
 class SongToEducationGenre(Base):
     __tablename__ = "song_education_genre_association"
 
-    song_id = Column(Integer, ForeignKey("song.id"), primary_key=True)
-    education_genre_id = Column(
-        Integer, ForeignKey("education_page_song_genres.id"), primary_key=True
+    song_id: Mapped[int] = mc(ForeignKey("song.id"), primary_key=True)
+    education_genre_id: Mapped[int] = mc(
+        ForeignKey("education_page_song_genres.id"), primary_key=True
     )
 
 
 class Fund(Base):
     __tablename__ = "funds"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String(50), nullable=False)
-
-    songs = relationship("Song", back_populates="fund", lazy="selectin")
+    id: Mapped[int_pk]
+    title: Mapped[str] = mc(String(50))
+    songs: Mapped[list["Song"]] = relationship(back_populates="fund", lazy="selectin")
 
     def __repr__(self) -> str:
         return f"{self.title}"
