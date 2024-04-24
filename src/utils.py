@@ -8,11 +8,14 @@ from fastapi import FastAPI, UploadFile
 from fastapi_limiter import FastAPILimiter
 
 from src.database.redis import init_redis
+from src.logger import logger
 
 
 async def lifespan(app: FastAPI):
     await init_redis()
+    logger.warning("APP IS STARTING")
     yield
+    logger.warning("APP IS DOWN")
     await FastAPILimiter.close()
 
 

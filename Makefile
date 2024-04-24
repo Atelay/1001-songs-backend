@@ -12,7 +12,7 @@ down:
 	docker compose down
 
 build:
-	docker compose up -d --build --scale postgres_tests=0 --scale postgres=0
+	docker compose up -d --build --scale postgres_tests=0
 	
 run: down
 	docker compose up postgres redis -d
