@@ -1,6 +1,5 @@
-import time
-
-from fastapi import FastAPI, Request
+from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
@@ -18,6 +17,7 @@ from src.config import (
 )
 from src.admin import __all__ as views
 from src.utils import lifespan
+from src.middlewares import add_process_time_header, logger_middleware
 from src.database.database import engine, async_session_maker
 from src.admin.auth import authentication_backend
 from src.auth.routers import auth_router
@@ -68,6 +68,9 @@ api_routers = [
 
 [admin.add_view(view) for view in views]
 
+
+app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
+app.add_middleware(BaseHTTPMiddleware, dispatch=logger_middleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ORIGINS,
@@ -76,15 +79,5 @@ app.add_middleware(
     allow_headers=ALLOW_HEADERS,
     expose_headers=EXPOSE_HEADERS,
 )
-
-
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = (time.time() - start_time) * 1000
-    response.headers["X-Process-Time"] = f"{round(process_time)} ms"
-    return response
-
 
 add_pagination(app)
