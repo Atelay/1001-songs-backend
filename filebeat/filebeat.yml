@@ -18,3 +18,5 @@ filebeat.inputs:
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
   index: "fastapi-app"
+  username: 'elastic'
+  password: '${ELASTICSEARCH_PASSWORD:}'
