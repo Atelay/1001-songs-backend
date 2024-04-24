@@ -78,9 +78,9 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      # - xpack.security.enabled=true
-      # - ELASTIC_USERNAME=elastic
-      # - ELASTIC_PASSWORD=Elastic
+      - ELASTIC_USERNAME=elastic
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - xpack.security.enabled=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     restart: always
     ports:
@@ -98,6 +98,9 @@ services:
     image: docker.elastic.co/kibana/kibana:7.15.0
     ports:
       - "5601:5601"
+    environment:
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -110,6 +113,9 @@ services:
     container_name: filebeat
     volumes:
         - ./logs:/backend_app/logs
+    environment:
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
     depends_on:
         - elasticsearch
         - kibana
