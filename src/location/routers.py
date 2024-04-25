@@ -571,7 +571,7 @@ async def get_song_on_map_by_id(
     """
     try:
         record = await session.get(Song, id)
-        if not all([record, record.is_active, not record.education_genres]):
+        if not record or not all([record.is_active, not record.education_genres]):
             raise NoResultFound
         return record
     except NoResultFound:
