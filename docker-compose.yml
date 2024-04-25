@@ -73,54 +73,54 @@ services:
     networks:
       - songs
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - ELASTIC_USERNAME=elastic
-      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
-      - xpack.security.enabled=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    restart: always
-    ports:
-      - "9200:9200"
-    networks:
-      - songs
-    healthcheck:
-      test: curl -u elastic:elastic -s -f elasticsearch:9200/_cat/health >/dev/null || exit 1
-      interval: 30s
-      timeout: 10s
-      retries: 5
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+  #   container_name: elasticsearch
+  #   environment:
+  #     - discovery.type=single-node
+  #     - ELASTIC_USERNAME=elastic
+  #     - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+  #     - xpack.security.enabled=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   restart: always
+  #   ports:
+  #     - "9200:9200"
+  #   networks:
+  #     - songs
+  #   healthcheck:
+  #     test: curl -u elastic:elastic -s -f elasticsearch:9200/_cat/health >/dev/null || exit 1
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
 
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.15.0
-    ports:
-      - "5601:5601"
-    environment:
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-    depends_on:
-      elasticsearch:
-        condition: service_healthy
-    networks:
-      - songs
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.15.0
+  #   ports:
+  #     - "5601:5601"
+  #   environment:
+  #     - ELASTICSEARCH_USERNAME=elastic
+  #     - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+  #   depends_on:
+  #     elasticsearch:
+  #       condition: service_healthy
+  #   networks:
+  #     - songs
 
-  filebeat:
-    build:
-        context: ./filebeat
-    container_name: filebeat
-    volumes:
-        - ./logs:/backend_app/logs
-    environment:
-      - ELASTICSEARCH_USERNAME=elastic
-      - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
-    depends_on:
-        - elasticsearch
-        - kibana
-    networks:
-      - songs
+  # filebeat:
+  #   build:
+  #       context: ./filebeat
+  #   container_name: filebeat
+  #   volumes:
+  #       - ./logs:/backend_app/logs
+  #   environment:
+  #     - ELASTICSEARCH_USERNAME=elastic
+  #     - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+  #   depends_on:
+  #       - elasticsearch
+  #       - kibana
+  #   networks:
+  #     - songs
 
 networks:
   songs:
