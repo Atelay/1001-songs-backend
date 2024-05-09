@@ -64,9 +64,9 @@ api_routers = [
     project_router,
 ]
 
-[app.include_router(router, prefix=API_PREFIX) for router in api_routers]
+[app.include_router(router, prefix=API_PREFIX) for router in api_routers]  # noqa
 
-[admin.add_view(view) for view in views]
+[admin.add_view(view) for view in views]  # noqa
 
 
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)
