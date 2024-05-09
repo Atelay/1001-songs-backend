@@ -42,9 +42,7 @@ async def process_change_password(
     user_token,
 ):
     password_helper = PasswordHelper()
-    verified, _ = password_helper.verify_and_update(
-        old_password, user.hashed_password
-    )
+    verified, _ = password_helper.verify_and_update(old_password, user.hashed_password)
     if not verified:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=OLD_PASS_INCORRECT

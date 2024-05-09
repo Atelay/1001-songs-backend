@@ -70,7 +70,9 @@ async def get_one_news(id: int, session: AsyncSession = Depends(get_async_sessio
             raise NoResultFound
         return record
     except NoResultFound as exc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND) from exc
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND
+        ) from exc
     except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=SERVER_ERROR
