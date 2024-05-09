@@ -96,7 +96,7 @@ async def on_model_change_for_files(
 ) -> None:
     """processing files from the admin_view.form_files_list fields when creating and updating records."""
 
-    is_save_as_new = request._form.get(f"save", None) == "Save as new"
+    is_save_as_new = request._form.get("save", None) == "Save as new"
     file_felds_list = []
     for field in self.form_files_list:
         if not isinstance(field, str):

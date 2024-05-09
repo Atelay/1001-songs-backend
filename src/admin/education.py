@@ -1,8 +1,7 @@
 from typing import Any
 from fastapi import Request
-from wtforms import ValidationError
+from wtforms import ValidationError, TextAreaField
 from sqlalchemy import select
-from wtforms import TextAreaField
 from wtforms.validators import DataRequired
 
 from src.admin.commons.base import BaseAdmin

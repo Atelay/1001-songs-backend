@@ -42,7 +42,7 @@ async def process_change_password(
     user_token,
 ):
     password_helper = PasswordHelper()
-    verified, updated = password_helper.verify_and_update(
+    verified, _ = password_helper.verify_and_update(
         old_password, user.hashed_password
     )
     if not verified:

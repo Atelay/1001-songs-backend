@@ -1,0 +1,18 @@
+[MASTER]
+init-hook='import sys; sys.path.append("./venv/lib/python3.11/site-packages")'
+max-line-length=120
+
+[MESSAGES CONTROL]
+disable=
+  C0114,
+  C0115,
+  C0116,
+  R0903,
+
+[flake8]
+# Максимальная длина строки
+max-line-length = 120
+# Исключения (игнорировать ошибки)
+ignore = E501, W605, F821, W503
+# Показать статистику о количестве ошибок
+statistics = True
