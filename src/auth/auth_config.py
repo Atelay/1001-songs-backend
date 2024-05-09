@@ -10,7 +10,7 @@ from .manager import get_user_manager
 from .models import AccessToken, User, get_access_token_db
 
 
-lifetime = 60 * 60 * 24 * 15  # 30 days
+lifetime = 60 * 60 * 24 * 15
 
 bearer_transport = BearerTransport(tokenUrl="api/v1/auth/login")
 

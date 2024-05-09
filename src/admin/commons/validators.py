@@ -30,7 +30,7 @@ class MediaValidator:
         file = field.data
         if file and file.size:
             content_type = file.content_type
-            if not content_type in self.media_types:
+            if content_type not in self.media_types:
                 raise ValidationError(
                     message=INVALID_FILE % (content_type, self.media_types)
                 )

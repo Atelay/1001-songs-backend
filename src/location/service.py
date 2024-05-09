@@ -17,12 +17,14 @@ async def get_records(model: Type[Base], session: AsyncSession):  # type: ignore
         if not result:
             raise NoResultFound
         return result
-    except NoResultFound:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND)
-    except Exception:
+    except NoResultFound as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND
+        ) from exc
+    except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=SERVER_ERROR
-        )
+        ) from exc
 
 
 async def get_record(model: Type[Base], condition: Optional[ClauseElement], session: AsyncSession):  # type: ignore
@@ -32,12 +34,12 @@ async def get_record(model: Type[Base], condition: Optional[ClauseElement], sess
         if not result:
             raise NoResultFound
         return result
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_REGION_FOUND % id,
-        )
-    except Exception:
+        ) from exc
+    except Exception as exc:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=SERVER_ERROR
-        )
+        ) from exc

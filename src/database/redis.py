@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from fastapi_limiter import FastAPILimiter
 from redis import asyncio as aioredis
@@ -10,9 +10,11 @@ from src.config import CACHE_PREFIX, REDIS_URL
 
 
 redis = aioredis.from_url(REDIS_URL, encoding="utf8", decode_responses=True)
+# pylint: disable=C3001
 cache_key = (
     lambda func, id, paginate: f"{CACHE_PREFIX}:{func}{f':{id}' if id else ''}{f':{paginate}' if paginate else ''}"
 )
+# pylint: enable=C3001
 
 
 async def init_redis() -> None:

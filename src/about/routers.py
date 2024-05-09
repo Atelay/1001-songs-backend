@@ -1,14 +1,13 @@
 from fastapi import APIRouter, status, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi_cache.decorator import cache
+from sqlalchemy.orm.exc import NoResultFound
 
 from src.about.models import About
 from src.database.database import get_async_session
-from sqlalchemy.orm.exc import NoResultFound
-from fastapi_cache.decorator import cache
-
-from src.config import HOUR
 from src.database.redis import my_key_builder
-from src.exceptions import NO_DATA_FOUND, SERVER_ERROR
+from src.config import HOUR
+from src.exceptions import NO_DATA_FOUND
 
 from .schemas import AboutSchema
 
@@ -25,9 +24,11 @@ async def get_about(
         if not record:
             raise NoResultFound
         return record
-    except NoResultFound:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND)
-    except Exception:
+    except NoResultFound as exc:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=SERVER_ERROR
+            status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND
+        ) from exc
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(exc)
         )

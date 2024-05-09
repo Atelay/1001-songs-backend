@@ -1,9 +1,7 @@
-from pydantic import (
-    Field,
-    BaseModel,
-)
+from pydantic import Field, BaseModel
 
 from .models import About
+
 
 TITLE_LEN = About.title.type.length
 CONTENT_LEN = About.content.type.length

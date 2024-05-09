@@ -1,5 +1,5 @@
 from fastapi_storages import FileSystemStorage
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from fastapi_storages.integrations.sqlalchemy import FileType
 

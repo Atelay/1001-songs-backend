@@ -15,7 +15,7 @@ from src.config import (
     SWAGGER_PARAMETERS,
     API_PREFIX,
 )
-from src.admin import __all__ as views
+from src.admin import views
 from src.utils import lifespan
 from src.middlewares import add_process_time_header, logger_middleware
 from src.database.database import engine, async_session_maker
@@ -64,9 +64,9 @@ api_routers = [
     project_router,
 ]
 
-[app.include_router(router, prefix=API_PREFIX) for router in api_routers]
+[app.include_router(router, prefix=API_PREFIX) for router in api_routers]  # noqa
 
-[admin.add_view(view) for view in views]
+[admin.add_view(view) for view in views]  # noqa
 
 
 app.add_middleware(BaseHTTPMiddleware, dispatch=add_process_time_header)

@@ -12,7 +12,7 @@ from src.admin.commons.validators import (
     MediaValidator,
     validate_url,
 )
-from src.config import EXTENDED_IMAGE_TYPE, MAX_IMAGE_SIZE_MB, IMAGE_TYPES
+from src.config import EXTENDED_IMAGE_TYPE, MAX_IMAGE_SIZE_MB
 from src.database.redis import invalidate_cache
 from src.payment.models import PaymentDetails
 
