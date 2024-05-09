@@ -15,7 +15,7 @@ from src.config import (
     SWAGGER_PARAMETERS,
     API_PREFIX,
 )
-from src.admin import __all__ as views
+from src.admin import views
 from src.utils import lifespan
 from src.middlewares import add_process_time_header, logger_middleware
 from src.database.database import engine, async_session_maker

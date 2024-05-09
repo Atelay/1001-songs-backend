@@ -17,7 +17,7 @@ from .pass_change import ChangePasswordAdmin, PasswordRecoveryAdmin
 from .partners import PartnersAdmin
 from .commons.base import CustomAjaxAdmin
 
-__all__ = [
+views = [
     CountryAdmin,
     RegionAdmin,
     CityAdmin,
