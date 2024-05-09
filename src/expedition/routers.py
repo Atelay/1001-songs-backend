@@ -11,6 +11,7 @@ from fastapi_cache.decorator import cache
 from src.database.database import get_async_session
 from src.database.redis import my_key_builder
 from src.exceptions import NO_DATA_FOUND
+from src.config import DAY, HOUR
 from .models import Expedition, ExpeditionCategory, ExpeditionInfo
 from .schemas import (
     ExpedListSchema,
@@ -18,7 +19,6 @@ from .schemas import (
     ExpeditionSchema,
 )
 from .exceptions import EXPED_NOT_FOUND
-from src.config import DAY, HOUR
 
 
 expedition_router = APIRouter(prefix="/expedition", tags=["Expedition"])

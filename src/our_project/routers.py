@@ -7,12 +7,13 @@ from sqlalchemy.orm.exc import NoResultFound
 from fastapi_pagination import Page
 from fastapi_pagination.ext.async_sqlalchemy import paginate
 from fastapi_cache.decorator import cache
+
 from src.config import HOUR
 from src.database.redis import my_key_builder
 from src.database.database import get_async_session
 from src.exceptions import NO_DATA_FOUND
-from .models import OurProject
 from .schemas import ProjectSchema, ProjectSliderSchema
+from .models import OurProject
 from .exceptions import NO_PROJECT_FOUND
 
 
