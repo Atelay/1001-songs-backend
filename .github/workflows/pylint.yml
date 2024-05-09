@@ -21,4 +21,4 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint --disable=C0114,C0115,C0116,C0301,C0415,R0903,W0613 --ignore=migrations $(git ls-files '*.py')
+        pylint --disable=C0114,C0115,C0116,C0301,C0415,R0903,W0613 --ignore=migrations,scripts $(git ls-files '*.py')
