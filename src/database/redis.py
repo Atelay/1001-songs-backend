@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List
 
 from fastapi_limiter import FastAPILimiter
 from redis import asyncio as aioredis

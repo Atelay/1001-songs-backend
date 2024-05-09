@@ -1,12 +1,4 @@
-from sqlalchemy import (
-    ARRAY,
-    Boolean,
-    Column,
-    String,
-    Date,
-    ForeignKey,
-    Integer,
-)
+from sqlalchemy import Column, String, Date, ForeignKey
 from sqlalchemy.orm import relationship, Mapped, mapped_column as mc
 from fastapi_storages.integrations.sqlalchemy import FileType
 from fastapi_storages import FileSystemStorage

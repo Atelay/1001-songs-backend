@@ -94,11 +94,11 @@ async def get_countries(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_COUNTRY_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -167,11 +167,11 @@ async def get_regions(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_REGION_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -242,11 +242,11 @@ async def get_cities(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_CITIES_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -317,11 +317,11 @@ async def get_genres(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_GENRES_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -386,11 +386,11 @@ async def get_funds(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_FUND_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -456,11 +456,11 @@ async def filter_songs(
         if not result.items:
             raise NoResultFound
         return result
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_SONG_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -551,11 +551,11 @@ async def filter_song_geotags(
             }
             for record in result
         ]
-    except NoResultFound:
+    except NoResultFound as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=NO_SONG_FOUND,
-        )
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
@@ -574,8 +574,10 @@ async def get_song_on_map_by_id(
         if not record or not all([record.is_active, not record.education_genres]):
             raise NoResultFound
         return record
-    except NoResultFound:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND)
+    except NoResultFound as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=NO_DATA_FOUND
+        ) from exc
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)

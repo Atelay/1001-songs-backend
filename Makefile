@@ -59,3 +59,6 @@ drop_db: down
 prune: down
 	docker system prune -a
 	docker volume prune -a
+
+lint:
+	flake8 --config=.flake8 src

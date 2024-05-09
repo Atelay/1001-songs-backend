@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
@@ -10,7 +10,7 @@ from fastapi_cache.decorator import cache
 from src.config import HOUR
 from src.database.redis import my_key_builder
 from src.database.database import get_async_session
-from src.exceptions import NO_DATA_FOUND, SERVER_ERROR
+from src.exceptions import NO_DATA_FOUND
 from .models import OurProject
 from .schemas import ProjectSchema, ProjectSliderSchema
 from .exceptions import NO_PROJECT_FOUND

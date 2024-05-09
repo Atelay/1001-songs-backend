@@ -1,7 +1,7 @@
 from re import search
 from typing import Optional, Union
-
 import jwt
+
 from fastapi import BackgroundTasks, Depends, HTTPException, Request, Response
 from fastapi_users import (
     BaseUserManager,
