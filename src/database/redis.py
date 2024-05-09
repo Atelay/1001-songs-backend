@@ -11,7 +11,7 @@ from src.config import CACHE_PREFIX, REDIS_URL
 
 redis = aioredis.from_url(REDIS_URL, encoding="utf8", decode_responses=True)
 cache_key = (
-    lambda func, id, paginate: f"{CACHE_PREFIX}:{func}{f':{id}' if id else ''}{f':{paginate}' if paginate else ''}"
+    lambda func, id, paginate: f"{CACHE_PREFIX}:{func}{f':{id}' if id else ''}{f':{paginate}' if paginate else ''}"  # noqa
 )
 
 

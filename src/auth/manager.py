@@ -15,10 +15,10 @@ from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi_users.jwt import generate_jwt, decode_jwt
 
-from .models import AccessToken, User
 from src.config import settings
 from src.database.database import get_async_session
 from src.auth.schemas import UserCreate
+from .models import AccessToken, User
 from .exceptions import (
     AFTER_LOGIN,
     AFTER_REGISTER,
@@ -69,7 +69,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         print(AFTER_LOGIN)
 
     def write_notification(email: str, message=""):
-        with open("log.txt", mode="w") as email_file:
+        with open("log.txt", mode="w", encoding="UTF-8") as email_file:
             content = f"notification for {email}: {message}"
             email_file.write(content)
 
