@@ -28,6 +28,11 @@ async def logger_middleware(request: Request, call_next):
         body = b"".join([segment async for segment in response.body_iterator])
         error_message = body.decode("utf-8")
         log_dict["error_message"] = error_message
-        response = StreamingResponse(BytesIO(body), media_type="application/json")
+        response = StreamingResponse(
+            BytesIO(body),
+            media_type="application/json",
+            status_code=response.status_code,
+            headers=response.headers,
+        )
     logger.info(log_dict)
     return response
