@@ -3,6 +3,7 @@
 DB_CONTAINER := postgres_songs
 REDIS_CONTAINER := redis_songs
 DB_VOLUME := $$(basename "$$(pwd)")_postgres_data
+DB_TEST_VOLUME := $$(basename "$$(pwd)")_postgres_tests_data
 REDIS_VOLUME := $$(basename "$$(pwd)")_backend_data
 APP_VOLUME := $$(basename "$$(pwd)")_redis_data
 
@@ -66,3 +67,9 @@ lint:
 test:
 	docker compose up -d postgres_tests
 	pytest tests/
+	docker stop postgres_tests
+	docker rm postgres_tests
+	if docker volume ls -q | grep -q $(DB_TEST_VOLUME); then \
+		docker volume rm $(DB_TEST_VOLUME); \
+		echo "successfully test_db";\
+	fi
