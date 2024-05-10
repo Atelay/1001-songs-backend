@@ -1,6 +1,12 @@
+import sys
+import os
 import logging
 import logging.handlers
-import sys
+
+
+LOG_DIR = "logs"
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
 
 logger = logging.getLogger()
 
