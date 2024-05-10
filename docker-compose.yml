@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
 
-  postgres: &pg_base
+  postgres:
     image: postgres:16.1
     container_name: postgres_songs
     ports:
@@ -20,7 +20,7 @@ services:
       timeout: 15s
 
   postgres_tests:
-    <<: *pg_base
+    image: postgres:16.1
     container_name: postgres_tests
     ports:
       - 5777:5432
@@ -30,6 +30,8 @@ services:
       - POSTGRES_PASSWORD=test_p
     volumes:
       - postgres_tests_data:/var/lib/postgresql/data
+    networks:
+      - songs
 
   redis:
     image: redis:7.2.4

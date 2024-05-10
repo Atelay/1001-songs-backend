@@ -65,7 +65,7 @@ lint:
 	flake8 --config=.flake8 src
 
 test:
-	docker compose up -d postgres_tests
+	docker compose -f docker-compose-test.yml up -d postgres_tests
 	pytest tests/
 	docker stop postgres_tests
 	docker rm postgres_tests

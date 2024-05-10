@@ -11,7 +11,6 @@ from src.config import settings
 from .conftest import async_session_maker
 
 
-
 @pytest.mark.asyncio
 async def test_get_footer(ac: AsyncClient):
     response = await ac.get("api/v1/footer")
@@ -32,7 +31,6 @@ async def test_get_footer(ac: AsyncClient):
 
 
 class TestFooterSchema:
-
     @pytest.mark.parametrize(
         "reporting, privacy_policy, rules_and_terms, email, facebook_url, youtube_url, expectation",
         [
