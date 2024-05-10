@@ -21,7 +21,7 @@ services:
 
   postgres_tests:
     <<: *pg_base
-    container_name: postgres_tests_cats
+    container_name: postgres_tests
     ports:
       - 5777:5432
     environment:
