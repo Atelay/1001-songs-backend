@@ -1,4 +1,0 @@
-2024-05-10 21:19:24,383 | INFO | {'url': '/api/v1/footer', 'method': 'GET', 'duration_ms': 85, 'status_code': 404, 'error_message': '{"detail":"No data found."}'}
-2024-05-10 21:19:24,386 | INFO | HTTP Request: GET http://localhost:8000/api/v1/footer "HTTP/1.1 404 Not Found"
-2024-05-10 21:19:24,541 | INFO | {'url': '/api/v1/footer', 'method': 'GET', 'duration_ms': 74, 'status_code': 200}
-2024-05-10 21:19:24,543 | INFO | HTTP Request: GET http://localhost:8000/api/v1/footer "HTTP/1.1 200 OK"
