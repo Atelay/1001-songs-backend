@@ -62,3 +62,7 @@ prune: down
 
 lint:
 	flake8 --config=.flake8 src
+
+test:
+	docker compose up -d postgres_tests
+	pytest tests/
