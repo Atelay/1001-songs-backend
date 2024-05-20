@@ -28,10 +28,10 @@ async def invalidate_cache(func: str, id: int = None, paginate: str = None):
 
 
 async def invalidate_cache_partial(funcs: List[str]):
+    keys_to_delete = []
     for func in funcs:
-        keys = await redis.keys(f"{CACHE_PREFIX}:{func}*")
-        for key in keys:
-            await redis.delete(key)
+        keys_to_delete.extend(await redis.keys(f"{CACHE_PREFIX}:{func}*"))
+    await redis.delete(*keys_to_delete)
 
 
 def my_key_builder(func, *args, **kwargs):
