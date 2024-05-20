@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi_pagination import add_pagination
+from fastapi.responses import ORJSONResponse
 from sqladmin import Admin
 
 from src.config import (
@@ -34,6 +35,7 @@ from src.partners.routers import partners_router
 
 
 app = FastAPI(
+    default_response_class=ORJSONResponse,
     swagger_ui_parameters=SWAGGER_PARAMETERS,
     title=PROJECT_NAME,
     lifespan=lifespan,

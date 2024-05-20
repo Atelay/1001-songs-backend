@@ -22,5 +22,5 @@ file = logging.handlers.TimedRotatingFileHandler(
 )
 file.setFormatter(formatter)
 logger.setLevel(logging.INFO)
-logger.addHandler(stream_handler)
+# logger.addHandler(stream_handler)
 logger.addHandler(file)
